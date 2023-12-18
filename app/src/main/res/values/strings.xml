@@ -27,11 +27,10 @@
     <string name="gequ">歌曲名称</string>
     <string name="maohao">:</string>
     <string name="music_title">晴天</string>
-
-    <string name="guangdie">光碟\n\n</string>
-    <string name="total">04:14\n</string>
+    <string name="guangdie">光碟</string>
+    <string name="total">04:14</string>
     <string name="play">播放</string>
-    <string name="stop">暂停\n</string>
-    <string name="con">继续\n</string>
-    <string name="exit">退出\n</string>
+    <string name="stop">暂停</string>
+    <string name="con">继续</string>
+    <string name="exit">退出</string>
 </resources>

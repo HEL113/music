@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
-    private static final int DELAY_TIME = 3000; // 延迟时间，单位为毫秒
+    private static final int DELAY_TIME = 2000; // 延迟时间，单位为毫秒
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

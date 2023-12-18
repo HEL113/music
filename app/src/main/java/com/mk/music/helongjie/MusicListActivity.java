@@ -2,6 +2,7 @@ package com.mk.music.helongjie;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class MusicListActivity extends AppCompatActivity {
         listView =findViewById(R.id.lv);
 
         musicList = SongHelper.getMusic(MusicListActivity.this);
-        Log.e("MusicList--keyar","getList" + musicList.size());
+        Log.e("MusicList--hlj","getList" + musicList.size());
 
         MusicAdapter adapter = new MusicAdapter();
         listView.setAdapter(adapter);
@@ -40,7 +41,7 @@ public class MusicListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.e("MusicListActivity---keyar", "点击了" + musicList.get(i).path);
+                Log.e("MusicListActivity--hlj", "点击了" + musicList.get(i).path);
                 // 创建 Intent
                 Intent ins = new Intent(MusicListActivity.this, MainActivity.class);
 
@@ -48,7 +49,7 @@ public class MusicListActivity extends AppCompatActivity {
                 ins.putExtra("music", musicList.get(i).path);
                 ins.putExtra("title", musicList.get(i).name);
                 ins.putExtra("duration", musicList.get(i).duration);
-                ins.putExtra("musciId",i);
+                ins.putExtra("musicId",i);
                 // 启动 MainActivity
                 startActivity(ins);
             }
@@ -102,6 +103,7 @@ public class MusicListActivity extends AppCompatActivity {
         TextView name;
         TextView duration;
     }
+    @SuppressLint("DefaultLocale")
     String timeFormat(int miltime){
         int time = miltime/1000;
         int rtime =Math.round(time);

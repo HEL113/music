@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint({"SetTextI18n", "CutPasteId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e("onclick","onclik");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         path = getIntent().getStringExtra("music");
         String name = getIntent().getStringExtra("title");
         int duration = getIntent().getIntExtra("duration", 0);
-        int musicId = getIntent().getIntExtra("musciId", 0);
+        int musicId = getIntent().getIntExtra("musicId", 0);
         Log.e("MainActivity", "path" + path + ", " + name + ", " + duration + ", " + musicId);
 
         if (name != null) {
@@ -184,15 +183,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             animator.pause();
         }
         if (v.getId() == R.id.btn_continue_play) {
-            binder.continnuePlay();
+            binder.continuePlay();
             animator.start();
         }
         if (v.getId() == R.id.btn_exit) {
-            intent = new Intent(MainActivity.this, MusicListActivity.class);
+            intent = new Intent(this, MusicListActivity.class);
             startActivity(intent);
         }
         if (v.getId() == R.id.iv_music) {
-            intent = new Intent(MainActivity.this, MusicListActivity.class);
+            intent = new Intent(this, MusicListActivity.class);
             startActivity(intent);
         }
     }
@@ -203,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPointerCaptureChanged(hasCapture);
     }
 
+    @SuppressLint("DefaultLocale")
     String timeFormat(int miltime){
         int time = miltime/1000;
         int rtime =Math.round(time);
