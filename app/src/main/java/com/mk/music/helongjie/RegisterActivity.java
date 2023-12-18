@@ -1,6 +1,8 @@
 package com.mk.music.helongjie;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,138 +13,117 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "login";
+import androidx.appcompat.app.AppCompatActivity;
 
-    private Button loginButton;
-    private Button zhuceButton;
-    private EditText usernameText;
-    private EditText passwordText;
+public class RegisterActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+    Button button;
+    Button esc;
+    EditText usernameText;
+    EditText passwordText;
+    EditText password1Text;
+    MysqlHe mysqlHe=new MysqlHe(RegisterActivity.this);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.zhuce);
+            usernameText = findViewById(R.id.username);
+            passwordText = findViewById(R.id.password);
+            password1Text = findViewById(R.id.password1);
+            button = findViewById(R.id.zhuce);
+            esc = findViewById(R.id.esc);
+            button.setOnClickListener(new View.OnClickListener() {
+                //检验用户是否存在
+                public boolean isUserExist(String name){
+                    boolean isExist=false;
+                    MysqlHe sqlhe=new MysqlHe(RegisterActivity.this);
+                    SQLiteDatabase db=sqlhe.getReadableDatabase();
+                    Cursor cursor=db.query(MysqlHe.TABLE,null,"username=?",new String[]{name},
+                            null,null,null);
+                    if (cursor.getCount()>0){
+                        cursor.moveToNext();
+                        Log.e(TAG,"UserExist:"+name+","+cursor.getCount());
+                        isExist=true;
+                    }
+                    cursor.close();
+                    db.close();
+                    return isExist;
+                }
+                @Override
+                public void onClick(View v) {
+                    String username = usernameText.getText().toString();
+                    String password = passwordText.getText().toString();
+                    String confirmPassword = password1Text.getText().toString();
+                    if (isUserExist(username)){
+                        Toast.makeText(RegisterActivity.this, R.string.userno, Toast.LENGTH_SHORT).show();
+                    }else {
+                        //isEmpty,判断非空
+                    if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                        Toast.makeText(RegisterActivity.this, R.string.use, Toast.LENGTH_SHORT).show();
+                    } else if (!password.equals(confirmPassword)) {
+                        Toast.makeText(RegisterActivity.this, R.string.mandm, Toast.LENGTH_SHORT).show();
+                    } else if (!password.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")) {
+                        Toast.makeText(RegisterActivity.this, R.string.pwd, Toast.LENGTH_SHORT).show();
+                    } else {
+                        SQLiteDatabase db=mysqlHe.getWritableDatabase();
+                        ContentValues values=new ContentValues();
+                        values.put(MysqlHe.USER_NAME,username);
+                        values.put(MysqlHe.PWD,password);
+                        long NO=db.insert(MysqlHe.TABLE,null,values);
+                        Log.e(TAG,"zhuce--插入数据到--hlj--"+NO);
+                        Log.e("注册传入--hlj","账号"+username);
+                        Log.e("注册传入--hlj","密码"+password);
+                        db.close();
+                        finish();
+                        //保留账号到登录页
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        intent.putExtra("username", username);
+//                        intent.putExtra("password", password);
+                        startActivity(intent);
+                    }
+                }}
+            });
 
-        usernameText = findViewById(R.id.username);
-        passwordText = findViewById(R.id.password);
-
-        loginButton = findViewById(R.id.button);
-        zhuceButton = findViewById(R.id.zhuce);
-
-        loginButton.setOnClickListener(this);
-        zhuceButton.setOnClickListener(this);
-
-        String username = getIntent().getStringExtra("username");
-        if (username != null) {
-            usernameText.setText(username);
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == loginButton) {
-            String name = usernameText.getText().toString();
-            String password = passwordText.getText().toString();
-            String sqlPWD = getUserPassword(name);
-            if (sqlPWD == null) {
-                Toast.makeText(this, R.string.zhaobudao, Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "hlj-找不到该用户：" + name);
-            } else if (password.equals(sqlPWD)) {
-                SPSave.saveUserInfo(this, name, password);
-                Intent intent = new Intent(this, MusicListActivity.class);
-                Log.e("登陆传入--hlj","账号"+name);
-                Log.e("登陆传入--hlj","密码"+password);
-                passwordText.setText("");
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, R.string.mm, Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "hlj-密码错误：" + sqlPWD + ", with " + password);
-                passwordText.setText("");
-                passwordText.requestFocus();
-            }
-        } else if (v == zhuceButton) {
-            Intent intent = new Intent(this, zhuce.class);
-            startActivity(intent);
-        }
-    }
-
-    private String getUserPassword(String name) {
-        String pwd = null;
-        MysqlHe sqlhe = new MysqlHe(this);
-        SQLiteDatabase db = sqlhe.getWritableDatabase();
-        Cursor cursor = db.query(MysqlHe.TABLE, null, "username=?", new String[]{name}, null, null, null);
-        if (cursor.getCount() != 0) {
-            cursor.moveToNext();
-            int index = cursor.getColumnIndex("password");
-            if (index < 0) {
-                Log.e(TAG, "password index Error: " + index);
-                return pwd;
-            } else {
-                pwd = cursor.getString(index);
-                Log.e(TAG, "getUserPassword: " + pwd);
-            }
-        } else {
-            Log.e(TAG, "getUserPassword cursor count 0");
-        }
-        cursor.close();
-        db.close();
-        return pwd;
-    }
-}
-// 静态验证密码格式
-//                String regex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
-//                boolean isValid = password.matches(regex);
-//                if (v == loginButton) { // 登陆按钮
-//                    if (name.isEmpty() || password.isEmpty()) {
-//                        Toast.makeText(login.this, R.string.use, Toast.LENGTH_SHORT).show();
-//                    } else if (!name.equals(Username) || !password.equals(Password)) {
-//                        Toast.makeText(login.this, R.string.mm, Toast.LENGTH_SHORT).show();}
-//                    else {
-//                        Intent intent = new Intent(login.this, login1.class);
-//                        intent.putExtra("Account", name);
-//                        intent.putExtra("PWD", password);
-//                        startActivityForResult(intent, 1);
-//                        passwordText.setText("");
-//                    }
-//                } else if (v == zhuceButton) {
-//                    Intent intent = new Intent(login.this, zhuce.class);
-//                    startActivity(intent);
-//                }
-
+            esc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }}
 //    @Override
 //    protected void onRestart() {
 //        super.onRestart();
-//        Log.i("LoginActivity--hlj", "onRestart-->");
+//        Log.i("LoginActivity--hlj","onRestart-->");
 //    }
 //
 //    @Override
 //    protected void onStart() {
 //        super.onStart();
-//        Log.i("LoginActivity--hlj", "onStart-->");
+//        Log.i("LoginActivity--hlj","onStart-->");
 //    }
 //
 //    @Override
 //    protected void onResume() {
 //        super.onResume();
-//        Log.i("LoginActivity--hlj", "onResume-->");
+//        Log.i("LoginActivity--hlj","onResume-->");
 //    }
 //
 //    @Override
 //    protected void onPause() {
 //        super.onPause();
-//        Log.i("LoginActivity--hlj", "onPause-->");
+//        Log.i("LoginActivity--hlj","onPause-->");
 //    }
 //
 //    @Override
 //    protected void onStop() {
 //        super.onStop();
-//        Log.i("LoginActivity--hlj", "onStop-->");
+//        Log.i("LoginActivity--hlj","onStop-->");
 //    }
 //
 //    @Override
 //    protected void onDestroy() {
 //        super.onDestroy();
-//        Log.i("LoginActivity--hlj", "onDestroy-->");
+//        Log.i("LoginActivity--hlj","onDestroy-->");
 //    }
-
+//}

@@ -21,4 +21,17 @@
     <string name="zuozi">桌子</string>
     <string name="_1000">1000</string>
     <string name="shopping">购物商城</string>
+    <string name="welcome">欢迎使用</string>
+    <string name="musiclsit">音乐列表</string>
+    <string name="time">时间</string>
+    <string name="gequ">歌曲名称</string>
+    <string name="maohao">:</string>
+    <string name="music_title">晴天</string>
+
+    <string name="guangdie">光碟\n\n</string>
+    <string name="total">04:14\n</string>
+    <string name="play">播放</string>
+    <string name="stop">暂停\n</string>
+    <string name="con">继续\n</string>
+    <string name="exit">退出\n</string>
 </resources>
