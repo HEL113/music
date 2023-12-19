@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_continue.setOnClickListener(this);
         iv_back.setOnClickListener(this);
 
+        btn_play.setVisibility(View.GONE);
+        btn_pause.setVisibility(View.VISIBLE);
         // 获取传递过来的音乐信息
         path = getIntent().getStringExtra("music");
         String name = getIntent().getStringExtra("title");
@@ -189,10 +191,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_play) {
+            btn_pause.setVisibility(View.VISIBLE);
+            btn_play.setVisibility(View.GONE);
+
+            // 执行播放操作
             binder.play(path);
             animator.start();
         }
         if (v.getId() == R.id.btn_pause) {
+            btn_play.setVisibility(View.VISIBLE);
+            btn_pause.setVisibility(View.GONE);
+
+            // 执行暂停操作
             binder.pausePlay();
             animator.pause();
         }

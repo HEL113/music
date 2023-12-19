@@ -17,8 +17,8 @@
 
     <TextView
         android:id="@+id/account_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/wm_hw"
+
         android:layout_below="@id/touxiang"
         android:layout_marginStart="60dp"
         android:text="@string/user"
@@ -38,8 +38,8 @@
 
     <TextView
         android:id="@+id/password_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/wm_hw"
+
         android:layout_below="@id/username"
         android:layout_marginStart="60dp"
         android:text="@string/password"
