@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static SeekBar seekBar; // 进度条
     private ImageView  iv_back ,iv_music; ;// 音乐图像
-    private Button btn_play, btn_pause, btn_continue,btn_exit; // 按钮
+    private Button btn_play, btn_pause,btn_previous,btn_exit,but_next1; // 按钮
     private static TextView tv_progress, tv_total, tv_title, musicname; // 文本视图
     MyserviceConn conn; // 服务连接
     Intent intent; // 意图
@@ -89,10 +89,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_progress = findViewById(R.id.tv_progress);
         tv_total = findViewById(R.id.tv_total);
         tv_title = findViewById(R.id.tv_title);
+        btn_exit=findViewById(R.id.btn_exit);
         seekBar = findViewById(R.id.sb);
         btn_play = findViewById(R.id.btn_play);
         btn_pause = findViewById(R.id.btn_pause);
-        btn_continue = findViewById(R.id.btn_continue);
+        btn_previous = findViewById(R.id.btn_previous);
         iv_back = findViewById(R.id.iv_back);
         musicname = findViewById(R.id.name);
         iv_music = findViewById(R.id.iv_music);
@@ -101,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         iv_music.setOnClickListener(this);
         btn_play.setOnClickListener(this);
         btn_pause.setOnClickListener(this);
-        btn_continue.setOnClickListener(this);
         iv_back.setOnClickListener(this);
+        btn_exit.setOnClickListener(this);
 
         btn_play.setVisibility(View.GONE);
         btn_pause.setVisibility(View.VISIBLE);
@@ -193,31 +194,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.btn_play) {
             btn_pause.setVisibility(View.VISIBLE);
             btn_play.setVisibility(View.GONE);
-
             // 执行播放操作
-            binder.play(path);
+            binder.continuePlay();
             animator.start();
         }
         if (v.getId() == R.id.btn_pause) {
             btn_play.setVisibility(View.VISIBLE);
             btn_pause.setVisibility(View.GONE);
-
             // 执行暂停操作
             binder.pausePlay();
             animator.pause();
         }
-        if (v.getId() == R.id.btn_continue) {
-            binder.continuePlay();
-            animator.start();
+        if (v.getId()==R.id.btn_exit){
+            binder.pausePlay();
+            animator.pause();
+            moveTaskToBack(true);
         }
         if (v.getId() == R.id.iv_back) {
             intent = new Intent(this, MusicListActivity.class);
             startActivity(intent);
-
         }
         if (v.getId() == R.id.iv_music) {
             intent = new Intent(this, MusicListActivity.class);
             startActivity(intent);
+        }
+        if (v.getId() == R.id.btn_next) {
+            // 点击了下一首按钮
+            playNext();  // 播放下一首歌曲
+        }
+
+        if (v.getId() == R.id.btn_previous) {
+            // 点击了上一首按钮
+            playPrevious();  // 播放上一首歌曲
         }
     }
 

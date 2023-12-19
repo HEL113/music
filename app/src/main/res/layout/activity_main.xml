@@ -71,9 +71,10 @@
         android:layout_marginTop="20dp"
         android:gravity="center">
         <Button
-            android:id="@+id/btn_continue1"
+            android:id="@+id/btn_previous"
             style="@style/btn"
-            android:background="@drawable/continue1"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/previous"
             android:textSize="18sp" />
         <FrameLayout
             android:layout_width="wrap_content"
@@ -92,9 +93,10 @@
         </FrameLayout>
 
         <Button
-            android:id="@+id/btn_continue"
+            android:id="@+id/btn_next"
+            android:layout_marginLeft="15dp"
             style="@style/btn"
-            android:background="@drawable/continue2"
+            android:background="@drawable/next1"
             android:textSize="18sp" />
     </LinearLayout>
     <LinearLayout

@@ -1,5 +1,6 @@
 package com.mk.music.helongjie;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -53,7 +54,14 @@ public class MusicService extends Service {
     }
 
     class MusicBinder extends Binder {
+
+        private String currentPath;  // 当前播放的音乐路径
+
         public void play(String path) {
+            if (currentPath != null && currentPath.equals(path) && mediaPlayer.isPlaying()) {
+                // 如果当前正在播放同一首歌曲，则不重新播放
+                return;
+            }
             mediaPlayer.reset();  // 重置媒体播放器
             try {
                 mediaPlayer.setDataSource(path);  // 设置音频数据源
@@ -66,6 +74,7 @@ public class MusicService extends Service {
                         addTimer();  // 启动定时器
                     }
                 });
+                currentPath = path;  // 更新当前播放的音乐路径
             } catch (IOException e) {
                 throw new RuntimeException(e);  // 捕获异常并抛出运行时异常
             }
@@ -83,6 +92,7 @@ public class MusicService extends Service {
             mediaPlayer.seekTo(progress);  // 设置音频播放位置
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -91,4 +101,5 @@ public class MusicService extends Service {
         mediaPlayer.release();  // 释放媒体播放器资源
         mediaPlayer = null;  // 将媒体播放器对象置空
     }
+
 }
