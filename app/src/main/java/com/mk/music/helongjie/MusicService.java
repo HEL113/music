@@ -21,7 +21,7 @@ public class MusicService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new MusicBinder();  // 返回一个MusicBinder实例，用于客户端与服务交互
+        return new MusicBinder();  //客户端与服务交互
     }
 
     @Override
