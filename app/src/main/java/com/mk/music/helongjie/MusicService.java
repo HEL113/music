@@ -1,6 +1,5 @@
 package com.mk.music.helongjie;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -9,15 +8,14 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MusicService extends Service {
-    static final String TAG="MusicService-hlj";  // 定义日志标签
-
+    static final String TAG = "MusicService-hlj";  // 定义日志标签
     private MediaPlayer mediaPlayer;  // 媒体播放器对象
     private Timer timer;  // 定时器对象
 
@@ -53,9 +51,20 @@ public class MusicService extends Service {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer == null) return;  // 如果媒体播放器为空，则返回
+        if (mediaPlayer.isPlaying()) mediaPlayer.stop();  // 如果媒体正在播放，则停止播放
+        mediaPlayer.release();  // 释放媒体播放器资源
+        mediaPlayer = null;  // 将媒体播放器对象置空
+    }
+
     class MusicBinder extends Binder {
 
+        List<Song> musicList;  // 歌曲列表
         private String currentPath;  // 当前播放的音乐路径
+        private int path;
 
         public void play(String path) {
             if (currentPath != null && currentPath.equals(path) && mediaPlayer.isPlaying()) {
@@ -80,6 +89,10 @@ public class MusicService extends Service {
             }
         }
 
+
+        private String findSongPathByMusicId(int musicId) {
+            return musicList.get(musicId).toString();
+        }
         public void pausePlay() {
             mediaPlayer.pause();  // 暂停音频播放
         }
@@ -92,14 +105,4 @@ public class MusicService extends Service {
             mediaPlayer.seekTo(progress);  // 设置音频播放位置
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mediaPlayer == null) return;  // 如果媒体播放器为空，则返回
-        if (mediaPlayer.isPlaying()) mediaPlayer.stop();  // 如果媒体正在播放，则停止播放
-        mediaPlayer.release();  // 释放媒体播放器资源
-        mediaPlayer = null;  // 将媒体播放器对象置空
-    }
-
 }

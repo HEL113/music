@@ -27,8 +27,9 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static SeekBar seekBar; // 进度条
-    private ImageView  iv_back ,iv_music; ;// 音乐图像
-    private Button btn_play, btn_pause,btn_previous,btn_exit,but_next1; // 按钮
+    private ImageView iv_back, iv_music;
+    ;// 音乐图像
+    private Button btn_play, btn_pause, btn_previous, btn_exit, btn_next; // 按钮
     private static TextView tv_progress, tv_total, tv_title, musicname; // 文本视图
     MyserviceConn conn; // 服务连接
     Intent intent; // 意图
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 处理音乐播放进度的Handler
     @SuppressLint("HandlerLeak")
     public static Handler handler = new Handler() {
+        @SuppressLint("SetTextI18n")
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -89,10 +91,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_progress = findViewById(R.id.tv_progress);
         tv_total = findViewById(R.id.tv_total);
         tv_title = findViewById(R.id.tv_title);
-        btn_exit=findViewById(R.id.btn_exit);
+        btn_exit = findViewById(R.id.btn_exit);
         seekBar = findViewById(R.id.sb);
         btn_play = findViewById(R.id.btn_play);
         btn_pause = findViewById(R.id.btn_pause);
+        btn_next = findViewById(R.id.btn_next);
         btn_previous = findViewById(R.id.btn_previous);
         iv_back = findViewById(R.id.iv_back);
         musicname = findViewById(R.id.name);
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_pause.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         btn_exit.setOnClickListener(this);
+        btn_next.setOnClickListener(this);
+        btn_previous.setOnClickListener(this);
 
         btn_play.setVisibility(View.GONE);
         btn_pause.setVisibility(View.VISIBLE);
@@ -115,8 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.e("MainActivity", "path" + path + ", " + name + ", " + duration + ", " + musicId);
 
 
-
-    // 设置音乐标题和总时长
+        // 设置音乐标题和总时长
         if (name != null) {
             tv_title.setText(name.substring(0, name.length() - 4));
         }
@@ -125,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 获取用户信息并显示
         Map<String, String> userInfo = SPSave.getUserInfo(this);
         musicname.setText("用户名：" + userInfo.get("account"));
-        Log.d("MainActivity","userInfo"+userInfo);
+        Log.d("MainActivity", "userInfo" + userInfo);
 
         // 获取音乐列表
         musicList = SongHelper.getMusic(MainActivity.this);
@@ -205,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             binder.pausePlay();
             animator.pause();
         }
-        if (v.getId()==R.id.btn_exit){
+        if (v.getId() == R.id.btn_exit) {
             binder.pausePlay();
             animator.pause();
             moveTaskToBack(true);
@@ -219,13 +223,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         if (v.getId() == R.id.btn_next) {
-            // 点击了下一首按钮
-            playNext();  // 播放下一首歌曲
+            int currentIndex = getCurrentMusicIndex();
+            int nextIndex = currentIndex + 1;
+            if (nextIndex >= musicList.size()) {
+                nextIndex = 0;
+            }
+            play(nextIndex);
         }
-
         if (v.getId() == R.id.btn_previous) {
-            // 点击了上一首按钮
-            playPrevious();  // 播放上一首歌曲
+            int currentIndex = getCurrentMusicIndex();
+            int lastIndex = currentIndex - 1;
+            if (lastIndex < 0) {
+                lastIndex = musicList.size() - 1;
+            }
+            play(lastIndex);
         }
     }
 
@@ -236,11 +247,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // 格式化时间
     @SuppressLint("DefaultLocale")
-    String timeFormat(int miltime){
-        int time = miltime/1000;
-        int rtime =Math.round(time);
-        int min = rtime/60;
-        int sec = rtime%60;
-        return min+":"+String.format("%2d",sec);
+    String timeFormat(int miltime) {
+        int time = miltime / 1000;
+        int rtime = Math.round(time);
+        int min = rtime / 60;
+        int sec = rtime % 60;
+        return min + ":" + String.format("%2d", sec);
+    }
+
+    private int getCurrentMusicIndex() {
+        for (int i = 0; i < musicList.size(); i++) {
+            if (musicList.get(i).path.equals(path)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void play(int index) {
+        if (index >= 0 && index < musicList.size()) {
+            Song song = musicList.get(index);
+            path = song.path;
+
+            binder.play(path);
+            animator.start();
+
+        }
     }
 }
+
