@@ -24,7 +24,7 @@
             android:gravity="center_horizontal"
             android:paddingRight="70dp"
             android:text="@string/music_title"
-            android:textSize="28sp" />
+            android:textSize="24sp" />
     </LinearLayout>
     <TextView
         android:id="@+id/name"

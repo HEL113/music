@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,13 +123,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 设置音乐标题和总时长
         if (name != null) {
-            tv_title.setText(name.substring(0, name.length() - 4));
+            tv_title.setText(getString(R.string.zz) + name.substring(0, name.length()));
+            tv_title.setSelected(true);  // 设置TextView获取焦点
+            tv_title.setEllipsize(TextUtils.TruncateAt.MARQUEE);  // 设置滚动效果
+            tv_title.setSingleLine(true);  // 设置为单行显示
+            tv_title.setMarqueeRepeatLimit(-1);  // 设置滚动次数为无限次
         }
         tv_total.setText(timeFormat(duration));
 
         // 获取用户信息并显示
         Map<String, String> userInfo = SPSave.getUserInfo(this);
-        musicname.setText( userInfo.get("account"));
+        musicname.setText(getString(R.string.una)+ userInfo.get("account"));
         Log.d("MainActivity", "userInfo" + userInfo);
 
         // 获取音乐列表
@@ -270,7 +275,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             path = song.path;
             String name = song.name;
             int duration = song.duration;
-            tv_title.setText(name.substring(0, name.length() - 4));
+            tv_title.setText(getString(R.string.zz) + name.substring(0, name.length()));
+            tv_title.setSelected(true);  // 设置TextView获取焦点
+            tv_title.setEllipsize(TextUtils.TruncateAt.MARQUEE);  // 设置滚动效果
+            tv_title.setSingleLine(true);  // 设置为单行显示
+            tv_title.setMarqueeRepeatLimit(-1);  // 设置滚动次数为无限次
             tv_total.setText(timeFormat(duration));
             binder.play(path);
             animator.start();

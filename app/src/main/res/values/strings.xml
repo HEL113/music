@@ -33,4 +33,6 @@
     <string name="stop">暂停</string>
     <string name="con">继续</string>
     <string name="exit">终止</string>
+    <string name="una">尊敬的 </string>
+    <string name="zz">正在播放: </string>
 </resources>
