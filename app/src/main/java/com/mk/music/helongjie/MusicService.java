@@ -83,6 +83,15 @@ public class MusicService extends Service {
                         addTimer();  // 启动定时器
                     }
                 });
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        // 歌曲播放完毕，重新开始播放
+                        mediaPlayer.seekTo(0);  // 将播放位置设置为0
+                        mediaPlayer.start();  // 开始播放音频
+                        addTimer();  // 启动定时器
+                    }
+                });
                 currentPath = path;  // 更新当前播放的音乐路径
             } catch (IOException e) {
                 throw new RuntimeException(e);  // 捕获异常并抛出运行时异常

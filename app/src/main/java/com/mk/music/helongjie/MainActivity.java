@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 获取用户信息并显示
         Map<String, String> userInfo = SPSave.getUserInfo(this);
-        musicname.setText("用户名：" + userInfo.get("account"));
+        musicname.setText( userInfo.get("account"));
         Log.d("MainActivity", "userInfo" + userInfo);
 
         // 获取音乐列表
@@ -268,10 +268,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (index >= 0 && index < musicList.size()) {
             Song song = musicList.get(index);
             path = song.path;
-
+            String name = song.name;
+            int duration = song.duration;
+            tv_title.setText(name.substring(0, name.length() - 4));
+            tv_total.setText(timeFormat(duration));
             binder.play(path);
             animator.start();
-
         }
     }
 }
