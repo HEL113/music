@@ -4,15 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/tv_music_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/music_title"
-        android:textSize="24sp"
-        android:layout_marginTop="20dp"/>
+        android:orientation="horizontal"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="0"
+            android:src="@drawable/back" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/music_title"
+            android:paddingRight="50dp"
+            android:gravity="center_horizontal"
+            android:textSize="24sp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -20,6 +34,8 @@
         android:text="@string/music_title"
         android:textSize="24sp"
         android:layout_marginTop="20dp"/>
+
+
 
     <ImageView
         android:id="@+id/iv_music"
@@ -65,33 +81,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
-        <Button
-            android:id="@+id/btn_play"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:text="@string/play"
-            android:textSize="18sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_continue1"
+                style="@style/btn"
+                android:background="@drawable/continue1"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btn_play"
+                style="@style/btn"
+                android:background="@drawable/play"
+                android:textSize="18sp" />
+            <Button
+                android:id="@+id/btn_pause"
+                android:background="@drawable/pause"
+                style="@style/btn"
+                android:textSize="18sp"/>
+            </LinearLayout>
 
         <Button
-            android:id="@+id/btn_pause"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:text="@string/stop"
-            android:textSize="18sp"/>
+            android:id="@+id/btn_continue"
+            style="@style/btn"
+            android:background="@drawable/continue2"
+            android:textSize="18sp" />
 
-
-        <Button
-            android:id="@+id/btn_continue_play"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:text="@string/con"
-            android:textSize="18sp"/>
         <Button
             android:id="@+id/btn_exit"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:text="@string/exit"
-            android:textSize="18sp"/>
+            style="@style/btn"
+            android:background="@drawable/exit"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
