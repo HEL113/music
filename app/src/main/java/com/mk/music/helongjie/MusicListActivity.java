@@ -1,14 +1,17 @@
 package com.mk.music.helongjie;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -21,8 +24,7 @@ public class MusicListActivity extends AppCompatActivity {
     TextView musiclist_title;
     ListView listView;
     List<Song> musicList;
-
-    MediaPlayer player = new MediaPlayer();
+    private int lastVisiblePosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,31 @@ public class MusicListActivity extends AppCompatActivity {
                 startActivity(ins);
             }
         });
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+                // 当滚动状态改变时，记录当前可见的第一个列表项的位置
+                if (i == SCROLL_STATE_IDLE) {
+                    lastVisiblePosition = listView.getFirstVisiblePosition();
+                }
+            }
 
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                // 不需要实现此方法
+            }
+        });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listView.setSelection(lastVisiblePosition);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lastVisiblePosition = listView.getFirstVisiblePosition();
     }
 
 
@@ -77,9 +103,7 @@ public class MusicListActivity extends AppCompatActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             ViewHolder holder;
-
-
-            if(view == null){
+            if(view== null){
                 view = View.inflate(MusicListActivity.this,R.layout.musiclist,null);
                 holder = new ViewHolder();
                 holder.id = view.findViewById(R.id.tv_id);
@@ -109,5 +133,20 @@ public class MusicListActivity extends AppCompatActivity {
         int min = rtime/60;
         int sec = rtime%60;
         return min+":"+String.format("%2d",sec);
+    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setMessage("确定要退出应用吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // 退出应用
+                finishAffinity();
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
     }
 }
