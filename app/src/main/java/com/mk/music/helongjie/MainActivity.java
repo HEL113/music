@@ -1,6 +1,5 @@
 package com.mk.music.helongjie;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
@@ -14,7 +13,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView iv_back, iv_music;
     ;// 音乐图像
     private Button btn_play, btn_pause, btn_previous, btn_exit, btn_next; // 按钮
-    private static TextView tv_progress, tv_total, tv_title, musicname; // 文本视图
+    private static TextView tv_progress, tv_total, tv_title, musicale; // 文本视图
     MyserviceConn conn; // 服务连接
     Intent intent; // 意图
     private ObjectAnimator animator; // 动画
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_next = findViewById(R.id.btn_next);
         btn_previous = findViewById(R.id.btn_previous);
         iv_back = findViewById(R.id.iv_back);
-        musicname = findViewById(R.id.name);
+        musicale = findViewById(R.id.name);
         iv_music = findViewById(R.id.iv_music);
 
         // 设置点击事件监听器
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 获取用户信息并显示
         Map<String, String> userInfo = SPSave.getUserInfo(this);
-        musicname.setText(getString(R.string.una)+ userInfo.get("account"));
+        musicale.setText(getString(R.string.una)+ userInfo.get("account"));
         Log.d("MainActivity", "userInfo" + userInfo);
 
         // 获取音乐列表

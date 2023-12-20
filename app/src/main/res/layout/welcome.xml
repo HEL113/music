@@ -4,17 +4,17 @@
     android:layout_width="match_parent"
     android:id="@+id/background_layout"
     android:layout_height="match_parent"
-    android:background="@drawable/welcome_background"
+    android:background="@drawable/d2"
     tools:context=".WelcomeActivity">
 
     <TextView
         android:id="@+id/welcome_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:alpha="0.8"
         android:text="@string/welcome"
-        android:textSize="50sp"
         android:textColor="@color/white"
-        android:alpha="0.5"
-        android:layout_centerInParent="true" />
+        android:textSize="50sp" />
 
 </RelativeLayout>

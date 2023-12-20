@@ -15,7 +15,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MusicService extends Service {
-    static final String TAG = "MusicService-hlj";  // 定义日志标签
     private MediaPlayer mediaPlayer;  // 媒体播放器对象
     private Timer timer;  // 定时器对象
 

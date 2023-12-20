@@ -1,10 +1,8 @@
 import org.jetbrains.kotlin.ir.backend.js.compile
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
-
 android {
     namespace = "com.mk.music.helongjie"
     compileSdk = 33

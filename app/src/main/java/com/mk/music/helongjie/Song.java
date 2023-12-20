@@ -6,4 +6,5 @@ public class Song {
     public long size;	//歌曲所占空间大小
     public int duration;	//歌曲时间长度
     public String path;	//歌曲地址
+
 }

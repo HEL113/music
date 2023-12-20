@@ -43,15 +43,11 @@ public class MusicListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.e("MusicListActivity--hlj", "点击了" + musicList.get(i).path);
-                // 创建 Intent
                 Intent ins = new Intent(MusicListActivity.this, MainActivity.class);
-
-                // 将音乐信息传递给 MainActivity
                 ins.putExtra("music", musicList.get(i).path);
                 ins.putExtra("title", musicList.get(i).name);
                 ins.putExtra("duration", musicList.get(i).duration);
                 ins.putExtra("musicId",i);
-                // 启动 MainActivity
                 startActivity(ins);
             }
         });
