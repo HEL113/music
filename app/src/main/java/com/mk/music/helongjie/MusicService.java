@@ -58,13 +58,10 @@ public class MusicService extends Service {
         mediaPlayer.release();  // 释放媒体播放器资源
         mediaPlayer = null;  // 将媒体播放器对象置空
     }
-
     class MusicBinder extends Binder {
-
         List<Song> musicList;  // 歌曲列表
         private String currentPath;  // 当前播放的音乐路径
         private int path;
-
         public void play(String path) {
             if (currentPath != null && currentPath.equals(path) && mediaPlayer.isPlaying()) {
                 // 如果当前正在播放同一首歌曲，则不重新播放

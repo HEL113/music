@@ -14,25 +14,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
     private static final int DELAY_TIME = 2000; // 延迟时间，单位为毫秒
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
-
         TextView welcomeText = findViewById(R.id.welcome_text);
         RelativeLayout backgroundLayout = findViewById(R.id.background_layout);
-
         ObjectAnimator textFadeOutAnimation = ObjectAnimator.ofFloat(welcomeText, "alpha", 1.0f, 0.0f);
         textFadeOutAnimation.setDuration(4000); // 文字渐变消失的时间，单位为毫秒
-
         ObjectAnimator backgroundFadeOutAnimation = ObjectAnimator.ofFloat(backgroundLayout, "alpha", 1.0f, 0.0f);
         backgroundFadeOutAnimation.setDuration(4000); // 背景渐变消失的时间，单位为毫秒
-
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(textFadeOutAnimation, backgroundFadeOutAnimation);
         animatorSet.start();
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

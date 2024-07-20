@@ -128,15 +128,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv_title.setMarqueeRepeatLimit(-1);  // 设置滚动次数为无限次
         }
         tv_total.setText(timeFormat(duration));
-
         // 获取用户信息并显示
         Map<String, String> userInfo = SPSave.getUserInfo(this);
         musicale.setText(getString(R.string.una)+ userInfo.get("account"));
         Log.d("MainActivity", "userInfo" + userInfo);
-
         // 获取音乐列表
         musicList = SongHelper.getMusic(MainActivity.this);
-
         // 设置进度条的监听器
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -157,8 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 binder.seekTo(progress);
             }
         });
-
-        // 设置音乐图像的动画效果
+        // 设置光盘动画效果
         ImageView imageView = findViewById(R.id.iv_music);
         animator = ObjectAnimator.ofFloat(imageView, "rotation", 0f, 360.0f);
         animator.setDuration(4000);
@@ -177,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // 连接服务器
     class MyserviceConn implements ServiceConnection {
-
         @Override
         public void onServiceConnected(ComponentName name, IBinder iBinder) {
             Log.e("MusicListActivity", "onServiceConnected: " + name + ", " + iBinder);
@@ -198,34 +193,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 按钮点击事件处理
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_play) {
+        if (v.getId() == R.id.btn_play) {//播放
             btn_pause.setVisibility(View.VISIBLE);
             btn_play.setVisibility(View.GONE);
-            // 执行播放操作
             binder.continuePlay();
             animator.start();
         }
-        if (v.getId() == R.id.btn_pause) {
+        if (v.getId() == R.id.btn_pause) { //暂停
             btn_play.setVisibility(View.VISIBLE);
             btn_pause.setVisibility(View.GONE);
-            // 执行暂停操作
             binder.pausePlay();
             animator.pause();
         }
-        if (v.getId() == R.id.btn_exit) {
+        if (v.getId() == R.id.btn_exit) {//整体退出
             binder.pausePlay();
             animator.pause();
             moveTaskToBack(true);
         }
-        if (v.getId() == R.id.iv_back) {
+        if (v.getId() == R.id.iv_back || v.getId() == R.id.iv_music) {//返回或者点击光盘返回
             intent = new Intent(this, MusicListActivity.class);
             startActivity(intent);
         }
-        if (v.getId() == R.id.iv_music) {
-            intent = new Intent(this, MusicListActivity.class);
-            startActivity(intent);
-        }
-        if (v.getId() == R.id.btn_next) {
+
+        if (v.getId() == R.id.btn_next) {//下一首
             int currentIndex = getCurrentMusicIndex();
             int nextIndex = currentIndex + 1;
             if (nextIndex >= musicList.size()) {
@@ -233,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             play(nextIndex);
         }
-        if (v.getId() == R.id.btn_previous) {
+        if (v.getId() == R.id.btn_previous) {//上一首
             int currentIndex = getCurrentMusicIndex();
             int lastIndex = currentIndex - 1;
             if (lastIndex < 0) {

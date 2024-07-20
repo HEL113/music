@@ -30,7 +30,6 @@ public class MusicListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.music);
-
         musiclist_title = findViewById(R.id.tv_title);
         musiclist_title.setText("本地音乐列表");
         listView =findViewById(R.id.lv);
@@ -38,7 +37,6 @@ public class MusicListActivity extends AppCompatActivity {
         Log.e("MusicList--hlj","getList" + musicList.size());
         MusicAdapter adapter = new MusicAdapter();
         listView.setAdapter(adapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

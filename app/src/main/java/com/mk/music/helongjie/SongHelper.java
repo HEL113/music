@@ -28,17 +28,14 @@ public class SongHelper {
         Log.e("SongHelper", "cursor: "+cursor);
         if (cursor != null) {
             //解析cursor数据，获得音乐列表
-
             Log.e("SongHelper", "cursor: "+cursor.moveToNext());
             while (cursor.moveToNext()) {
-
                 Song song = new Song();
                 song.name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
                 song.singer = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 song.path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 song.duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                 song.size = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
-
                 list.add(song);
             }
         }else {
